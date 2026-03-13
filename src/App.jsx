@@ -18,7 +18,7 @@ export default function App() {
   const [watchlist, setWatchlist] = useState([]);
 
 
-  const API_KEY = "35003dda";
+  const API_KEY = "ENTER_OMDB_API_KEY_HERE";
 
 
   const fetchMovies = async (query) => {
