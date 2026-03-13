@@ -112,8 +112,8 @@ export default function App() {
             - Else if error is not empty, show <p className="status error">{error}</p>
             - Else if movies.length === 0, show
               <p className="status">No movies found.</p>
-            - Otherwise render <MovieGrid movies={movies} addToWatchlist={addToWatchlist} /> */
-            isLoading ? (
+            - Otherwise render <MovieGrid movies={movies} addToWatchlist={addToWatchlist} /> */}
+            {isLoading ? (
               <p className="status">Loading...</p>
             ) : error ? (
               <p className="status error">{error}</p>
@@ -128,7 +128,7 @@ export default function App() {
             Add a watchlist section below the search results.
             - Show a heading such as "My Watchlist"
             - If watchlist.length === 0, show "No movies in watchlist yet."
-            - Otherwise map through watchlist and render each saved movie */
+            - Otherwise map through watchlist and render each saved movie */}
             <section className="watchlist">
               <h2>My Watchlist</h2>
               {watchlist.length === 0 ? (
@@ -136,7 +136,7 @@ export default function App() {
               ) : (
                 <MovieGrid movies={watchlist} addToWatchlist={addToWatchlist} />
               )}
-            </section>}
+            </section>
         </main>
     </div>
   );

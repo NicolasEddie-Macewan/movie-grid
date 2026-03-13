@@ -25,8 +25,13 @@ export default function SearchBar({ onSearch }) {
           Create a controlled input:
           - value should be inputValue
           - onChange should update inputValue
-          - add a helpful placeholder */
-          }
+          - add a helpful placeholder */}
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Search for movies..."
+      />
       <button type="submit" className="primary">Search Movies</button>
     </form>
   );
