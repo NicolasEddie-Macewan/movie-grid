@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export default function SearchBar({ onSearch }) {
   // TODO 13:
   // Create local state variable inputValue initialized to ""
+  const [inputValue, setInputValue] = useState("");
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,6 +12,11 @@ export default function SearchBar({ onSearch }) {
     // If inputValue.trim() is not empty:
     // - call onSearch with inputValue.trim()
     // - clear the input by setting inputValue to ""
+    const trimmedValue = inputValue.trim();
+    if (trimmedValue) {
+      onSearch(trimmedValue);
+      setInputValue("");
+    }
   };
  
   return (
@@ -19,7 +25,8 @@ export default function SearchBar({ onSearch }) {
           Create a controlled input:
           - value should be inputValue
           - onChange should update inputValue
-          - add a helpful placeholder */}
+          - add a helpful placeholder */
+          }
       <button type="submit" className="primary">Search Movies</button>
     </form>
   );

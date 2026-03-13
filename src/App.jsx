@@ -11,8 +11,14 @@ export default function App() {
   // - error: empty string
   // - searchTerm: "Batman"
   // - watchlist: empty array
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("Batman");
+  const [watchlist, setWatchlist] = useState([]);
 
-  const API_KEY = "ENTER_OMDB_API_KEY_HERE";
+
+  const API_KEY = "35003dda";
 
 
   const fetchMovies = async (query) => {
@@ -20,11 +26,16 @@ export default function App() {
     // Before fetching:
     // - set isLoading to true
     // - clear the error message
+    setIsLoading(true);
+    setError("");
 
     if (!API_KEY || API_KEY === "ENTER_OMDB_API_KEY_HERE") {
       // Makes movies empty such as setMovies([])
       // Call setError with your error message such as “No API key”
       // Set isLoading to false;
+      setMovies([]);
+      setError("No API key provided.");
+      setIsLoading(false);
       return;
     }
 
@@ -40,14 +51,23 @@ export default function App() {
       // Otherwise:
       // - set movies to [] (like TODO 4)
       // - set error to data.Error or “No movies found”
+      if (data.Response === "True") {
+        setMovies(data.Search);
+      } else {
+        setMovies([]);
+        setError(data.Error || "No movies found.");
+      }
 
     } catch (err) {
       // TODO 6:
       // Set error to "Failed to fetch movies."
       // Set movies to []
+      setError("Failed to fetch movies.");
+      setMovies([]);
     } finally {
       // TODO 7:
       // Set isLoading to false 
+      setIsLoading(false);
     }
   };
 
@@ -55,12 +75,14 @@ export default function App() {
     // TODO 8:
     // Call fetchMovies with searchTerm
     // This should run on first load and when searchTerm changes.
+    fetchMovies(searchTerm);
   }, [searchTerm]);
 
   const handleSearch = (newSearchTerm) => {
     // TODO 9:
     // Update searchTerm using the value received from SearchBar.
     // Do not call fetchMovies directly here.
+    setSearchTerm(newSearchTerm);
   };
 
   const addToWatchlist = (movie) => {
@@ -80,7 +102,8 @@ export default function App() {
       <Header title="Movie Search Engine" searchTerm={searchTerm} />
 
       {/* TODO 10:
-          Render SearchBar and pass handleSearch as onSearch */}
+          Render SearchBar and pass handleSearch as onSearch */
+        <SearchBar onSearch={handleSearch} />}
 
       <main className="panel">
         {/* TODO 11:
@@ -89,16 +112,32 @@ export default function App() {
             - Else if error is not empty, show <p className="status error">{error}</p>
             - Else if movies.length === 0, show
               <p className="status">No movies found.</p>
-            - Otherwise render <MovieGrid movies={movies} addToWatchlist={addToWatchlist} />
-        */}
+            - Otherwise render <MovieGrid movies={movies} addToWatchlist={addToWatchlist} /> */
+            isLoading ? (
+              <p className="status">Loading...</p>
+            ) : error ? (
+              <p className="status error">{error}</p>
+            ) : movies.length === 0 ? (
+              <p className="status">No movies found.</p>
+            ) : (
+              <MovieGrid movies={movies} addToWatchlist={addToWatchlist} />
+            )}
 
-        {/* TODO 11A:
+
+      {/* TODO 11A:
             Add a watchlist section below the search results.
             - Show a heading such as "My Watchlist"
             - If watchlist.length === 0, show "No movies in watchlist yet."
-            - Otherwise map through watchlist and render each saved movie
-        */}
-      </main>
+            - Otherwise map through watchlist and render each saved movie */
+            <section className="watchlist">
+              <h2>My Watchlist</h2>
+              {watchlist.length === 0 ? (
+                <p>No movies in watchlist yet.</p>
+              ) : (
+                <MovieGrid movies={watchlist} addToWatchlist={addToWatchlist} />
+              )}
+            </section>}
+        </main>
     </div>
   );
 }
